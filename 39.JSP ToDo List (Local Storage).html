@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List</title>
+    <style>
+        #todolist
+        {
+            background-color:black ;
+            padding: 20px;
+            color: white;
+            height: 600px;
+            margin: auto;
+            width: 300px;
+            border-radius:10px ;
+        }
+        input
+        {
+            width: 80%;
+            border-radius:10px ;
+            font-size: medium;
+        }
+        button
+        {
+            background-color: antiquewhite;
+            border-radius:4px ;
+            font-size: medium;
+        }
+        h1
+        {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+
+        <div id="todolist">
+
+            <h1>ToDo list</h1>
+            <input type="text" id="input"> 
+            
+            <button type="submit" onclick="start()">Add</button>
+
+            <div class="list">
+
+            </div>
+
+        </div>
+    </div>
+
+<script>
+
+let todos = []
+
+
+function start()
+{
+    let input = document.getElementById('input').value
+    if(input.length <=0)
+    {
+        alert("Input must not to be empty...")
+    }
+    make_array(input)
+}
+
+function make_array(val)
+{
+    todos.push(val)
+    console.log(todos)
+
+    //passing the entered input to list
+    make_list(val)
+}
+
+function make_list(x)
+{
+    let para = document.createElement('p')
+
+    document.querySelector('.list').appendChild(para).innerHTML = x
+
+    input.value = ""
+
+para.addEventListener('click',()=>
+{
+    para.style.textDecoration = 'line-through'
+    remove(x)
+})
+
+para.addEventListener('dblclick',()=>
+{
+    document.querySelector('.list').removeChild(para)
+    remove(x)
+})
+
+//Accessing the local storage
+localStorage.setItem('key',JSON.stringify(todos))
+
+
+}
+
+function remove(y)
+{
+    let index = todos.indexOf(y)
+
+    if(y !== -1)
+    {
+        todos.splice(index,1)
+    }
+    localStorage.setItem('key',JSON.stringify(todos))
+}
+
+//Whenever the window getsbloaded it must restore the elements from local storage...
+
+window.onload = ()=>
+{
+    console.log('loaded....')
+
+    todos = JSON.parse(localStorage.getItem('key')) || []
+
+todos.forEach((val) =>
+{
+    make_list(val)
+})
+}
+</script>
+</body>
+</html>
